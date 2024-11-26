@@ -34,6 +34,6 @@ class UserController {
 
   void verifUser(String email, String pass) async {
     int id = await UserModel.verifUser(email, pass);
-    _view.dashboard(id);
+    
   }
 }

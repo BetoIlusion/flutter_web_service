@@ -15,7 +15,7 @@ class MainApp extends StatelessWidget {
       title: 'Web Services',
       debugShowCheckedModeBanner: false,
       routes: GetRoutes(),
-      initialRoute: '/',
+      initialRoute:'/dashboard',
     );
   }
 }
