@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../screens/cortes_screen.dart';
+
 class DashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

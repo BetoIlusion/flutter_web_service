@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_web_service/controller/user_controller.dart';
+import 'package:flutter_web_service/routes/routes.dart';
+import 'package:flutter_web_service/screens/dashboard.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,15 +15,90 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
 
-  void verifUser() {
+  void verifUser() async {
     final String email = emailController.text;
-    final String pass = passwordController.text;
-    //UserController controller = UserController(this);
-   // controller.verifUser(email, pass);
+    final String password = passwordController.text;
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter both email and password'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      final UserController controller = UserController();
+      final bool isValid = await controller.verifUser(email, password);
+      if (!mounted) return;
+
+      if (isValid) {
+        Navigator.pushReplacementNamed(context, Routes.dashboard);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid credentials. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
-  void dashboard(id){
-    // Navigator.push(context, MaterialPageRoute(builder: (context)=>));
+
+  Future<void> handleLogin() async {
+    final String email = emailController.text;
+    final String password = passwordController
+        .text; // Fixed variable name from 'pass' to 'password'
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Please enter both email and password'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    try {
+      final UserController controller = UserController();
+      final bool isValid = await controller.verifUser(email, password);
+      if (!mounted) return;
+
+      if (isValid) {
+        Navigator.pushReplacementNamed(context, Routes.dashboard);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Invalid credentials. Please try again.'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    } catch (e) {
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Error: ${e.toString()}'),
+          backgroundColor: Colors.red,
+        ),
+      );
+    }
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -125,8 +202,9 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () {
-                    verifUser();
+                  onPressed: () async {
+                    ///este es mi veriufser
+                    // verifUser();
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
