@@ -1,39 +1,58 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_web_service/model/user_model.dart';
-import 'package:flutter_web_service/screens/login_screen.dart';
+import 'package:flutter_web_service/export.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 
 class UserController {
-  final LoginScreen _view;
+  
+  Future<bool> loginUser(String email, String password) async {
+    // Construcción del XML para la solicitud SOAP
+    final String soapRequest = '''
+    <?xml version="1.0" encoding="utf-8"?>
+    <soap:Envelope xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/soap/envelope/">
+      <soap:Body>
+        <ValidarLoginPassword xmlns="http://tempuri.org/">
+          <lsLogin>$email</lsLogin>
+          <lsPassword>$password</lsPassword>
+        </ValidarLoginPassword>
+      </soap:Body>
+    </soap:Envelope>
+    ''';
 
-  UserController(this._view);
-  // Crear un nuevo usuario
-  Future<int> createUser(String email, String pass) async {
-    UserModel user = UserModel(email: email, pass: pass);
-    return await user.createUser();
-  }
+    // Dirección del servicio web
+    const String url = 'http://190.171.244.211:8080/wsVarios/wsAD.asmx';
 
-  // Leer todos los usuarios
-  Future<List<UserModel>> getAllUsers() async {
-    return await UserModel.readUsers();
-  }
+    // Cabeceras para la solicitud SOAP
+    final Map<String, String> headers = {
+      'Content-Type': 'text/xml; charset=utf-8',
+      'SOAPAction': 'http://tempuri.org/ValidarLoginPassword',
+    };
 
-  // Leer un usuario por ID
-  Future<UserModel?> getUserById(int id) async {
-    return await UserModel.readUser(id);
-  }
+    // Realizar la solicitud POST
+    final response = await http.post(
+      Uri.parse(url),
+      headers: headers,
+      body: soapRequest,
+    );
 
-  // Actualizar un usuario existente
-  Future<int> updateUser(UserModel user) async {
-    return await user.updateUser();
-  }
+    if (response.statusCode == 200) {
+      // Si la respuesta es exitosa, analizar la respuesta SOAP
+      String responseBody = response.body;
 
-  // Eliminar un usuario por ID
-  Future<int> deleteUser(int id) async {
-    return await UserModel.deleteUser(id);
-  }
-
-  void verifUser(String email, String pass) async {
-    int id = await UserModel.verifUser(email, pass);
-    
+      // Buscar el contenido dentro de ValidarLoginPasswordResult
+      final RegExp regExp = RegExp(r'<ValidarLoginPasswordResult>(.*?)</ValidarLoginPasswordResult>');
+      final match = regExp.firstMatch(responseBody);
+      
+      if (match != null && match.group(1) != null) {
+        String result = match.group(1)!;
+        // Dependiendo del valor devuelto, puedes hacer algo
+        if (result == 'Success') {
+          return true;
+        } else {
+          return false;
+        }
+      }
+    }
+    return false;
   }
 }
+

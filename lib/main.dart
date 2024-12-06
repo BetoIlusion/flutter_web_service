@@ -1,6 +1,6 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_web_service/routes/routes.dart';
-import 'dart:io';
+import 'export.dart';
+import 'screens/login_screen.dart';
+import 'screens/pruebas/w_s_prueba1.dart';
 
 void main() {
   runApp(const MainApp());
@@ -14,8 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Web Services',
       debugShowCheckedModeBanner: false,
-      routes: GetRoutes(),
-      initialRoute:'/dashboard',
+      home: MyHomePage(),
     );
   }
 }

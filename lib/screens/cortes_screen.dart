@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import '../screens/importar_cortes_screen.dart';
 class CortesScreen extends StatelessWidget {
+  const CortesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Cortes')),
+      appBar: AppBar(title: const Text('Cortes')),
       body: Center(
         child: ElevatedButton(
           onPressed: () {
@@ -13,7 +15,7 @@ class CortesScreen extends StatelessWidget {
               MaterialPageRoute(builder: (_) => ImportarCortesScreen()),
             );
           }, 
-          child: Text('Importar Cortes desde el Servidor'),
+          child: const Text('Importar Cortes desde el Servidor'),
         ),
       ),
     );

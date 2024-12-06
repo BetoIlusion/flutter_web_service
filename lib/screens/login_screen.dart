@@ -1,7 +1,4 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_web_service/controller/user_controller.dart';
-import 'package:flutter_web_service/routes/routes.dart';
-import 'package:flutter_web_service/screens/dashboard.dart';
+import 'package:flutter_web_service/export.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -14,91 +11,40 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
+  String _response = 'vacio';
+  final UserController userController = UserController();
 
-  void verifUser() async {
-    final String email = emailController.text;
-    final String password = passwordController.text;
-
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter both email and password'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
+  void _botonLogin() async {
+    final email = emailController.text.trim();
+    final password = passwordController.text.trim();
+    
+    final client = SoapClient(
+      endpoint: 'http://190.171.244.211:8080/wsVarios/wsAD.asmx',
+      namespace: 'http://tempuri.org/',
+    );
+    final service = SoapService(client: client);
 
     try {
-      final UserController controller = UserController();
-      final bool isValid = await controller.verifUser(email, password);
-      if (!mounted) return;
-
-      if (isValid) {
-        Navigator.pushReplacementNamed(context, Routes.dashboard);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid credentials. Please try again.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } catch (e) {
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ),
+      final response = await service.validarLoginPassword(
+        email,
+        password,
       );
+      setState(() {
+        _response = response;
+      });
+    } catch (e) {
+      setState(() {
+        _response = 'Error: $e';
+      });
     }
   }
 
-  Future<void> handleLogin() async {
-    final String email = emailController.text;
-    final String password = passwordController
-        .text; // Fixed variable name from 'pass' to 'password'
-
-    if (email.isEmpty || password.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Please enter both email and password'),
-          backgroundColor: Colors.red,
-        ),
-      );
-      return;
-    }
-
-    try {
-      final UserController controller = UserController();
-      final bool isValid = await controller.verifUser(email, password);
-      if (!mounted) return;
-
-      if (isValid) {
-        Navigator.pushReplacementNamed(context, Routes.dashboard);
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Invalid credentials. Please try again.'),
-            backgroundColor: Colors.red,
-          ),
-        );
-      }
-    } catch (e) {
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: ${e.toString()}'),
-          backgroundColor: Colors.red,
-        ),
-      );
-    }
+  void _botonSignUp() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => SignUpScreen()),
+    );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -203,8 +149,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
-                    ///este es mi veriufser
-                    // verifUser();
+                    _botonLogin();
                   },
                   style: ElevatedButton.styleFrom(
                     padding: const EdgeInsets.symmetric(vertical: 16),
@@ -235,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      // Navigate to Register screen
+                      _botonSignUp();
                     },
                     child: const Text(
                       'Sign Up',
@@ -247,6 +192,9 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ],
               ),
+              const SizedBox(height: 20),
+              Text('Respuesta del servidor:'),
+              Text(_response),
             ],
           ),
         ),
