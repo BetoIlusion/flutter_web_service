@@ -14,7 +14,7 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Web Services',
       debugShowCheckedModeBanner: false,
-      home: MyHomePage(),
+      home: MyHomePage(),    //se añadio el const para que no se vuelva a cargar la pagina
     );
   }
 }
