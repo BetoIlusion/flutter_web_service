@@ -25,6 +25,9 @@ class MenuPrincipalScreen extends StatelessWidget {
     );
   }
 
+  //botn salir si no les gusta lo borran :v
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

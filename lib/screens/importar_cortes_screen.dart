@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/soap_service.dart';
+
+
 class ImportarCortesScreen extends StatefulWidget {
   const ImportarCortesScreen({super.key});
 
@@ -9,8 +11,11 @@ class ImportarCortesScreen extends StatefulWidget {
 
 class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
   String? selectedRuta;
+  String? codigofijo;
+
   List<String> rutas = [];
   bool isLoading = true;
+  //final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
