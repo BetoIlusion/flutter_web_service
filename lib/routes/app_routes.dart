@@ -1,27 +1,20 @@
 
-import 'package:flutter/widgets.dart';
-import 'package:flutter_web_service/screens/cortes_screen.dart';
-import 'package:flutter_web_service/screens/importar_cortes_screen.dart';
-import 'package:flutter_web_service/screens/login_screen.dart';
-import 'package:flutter_web_service/screens/menu_principal_screen.dart';
-import 'package:flutter_web_service/screens/registrar_cortes_screen.dart';
 
-///aqui manejamos todas las rutas de la aplicacion
 
 class AppRoutes {
-  static const String login = '/login';
-  static const String mainMenu = '/main-menu';
-  static const String cortes = '/cortes';
-  static const String importarCortes = '/importar-cortes';
-  static const String registrarCortes = '/registrar-cortes';
+  
+  static String login_screen= '/login';
+  static String menu_principal_screen= '/menuPrincipal';
+  static String cortes = '/cortes';
+  static String registrarCortes = '/registrarCortes';
+  static String importarCortes = '/importarCortes';
 
-  static Map<String, WidgetBuilder> get routes => {
-    login: (context) => const LoginScreen(),
-    mainMenu: (context) => const MenuPrincipalScreen(),
-    cortes: (context) => const CortesScreen(),
-    importarCortes: (context) => const ImportarCortesScreen(),
-    registrarCortes: (context) => const RegistrarCortesScreen(),
-  };
+
+  static void configureRoutes() {
+
+  }
+
 }
+
 
 

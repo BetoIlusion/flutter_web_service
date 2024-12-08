@@ -1,4 +1,5 @@
 import 'package:flutter_web_service/export.dart';
+import 'package:http/http.dart';
 
 class SignUpScreen extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -9,7 +10,25 @@ class SignUpScreen extends StatelessWidget {
 
   void _botonSignUp(context) async {
     
+    final String email = emailController.text.trim();
+    final String password = passwordController.text.trim();
+
+    if (email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('completar todos los campos'),
+          backgroundColor: Colors.red,
+        ),
+      );
+      return;
+    }
+
+    ///validar correo
+   
   }
+
+  ///seguidos
+   
 
   @override
   Widget build(BuildContext context) {

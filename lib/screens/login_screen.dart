@@ -17,7 +17,7 @@ class _LoginScreenState extends State<LoginScreen> {
   void _botonLogin() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    
+
     final client = SoapClient(
       endpoint: 'http://190.171.244.211:8080/wsVarios/wsAD.asmx',
       namespace: 'http://tempuri.org/',
@@ -36,6 +36,45 @@ class _LoginScreenState extends State<LoginScreen> {
       setState(() {
         _response = 'Error: $e';
       });
+
+      // Mostrar mensaje de error   esto para el login -> dahsboard
+
+      try {
+        // Si el login es exitoso, navegar al menú principal
+        if (_response == 'Success') {
+          // Verificar si el widget sigue montado
+          if (!mounted) return;
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const MenuPrincipalScreen()),
+          );
+        } else {
+          // Mostrar mensaje de error si el login falla
+          if (!mounted) return;
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Usuario o contraseña incorrectos'),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      } catch (e) {
+        setState(() {
+          _response = 'Error: $e';
+        });
+
+        if (!mounted) return;
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Error de conexión'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
