@@ -40,9 +40,7 @@ class _LoginScreenState extends State<LoginScreen> {
       // Mostrar mensaje de error   esto para el login -> dahsboard
 
       try {
-        // Si el login es exitoso, navegar al menú principal
         if (_response == 'Success') {
-          // Verificar si el widget sigue montado
           if (!mounted) return;
 
           Navigator.pushReplacement(

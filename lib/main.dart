@@ -1,7 +1,5 @@
-import 'package:flutter_web_service/routes/app_routes.dart';
-
+import 'package:flutter/material.dart';
 import 'export.dart';
-import 'screens/login_screen.dart';
 //import 'screens/pruebas/w_s_prueba1.dart';
 
 void main() {
@@ -16,10 +14,13 @@ class MainApp extends StatelessWidget {
     return MaterialApp(
       title: 'Web Services',
       debugShowCheckedModeBanner: false,
-      home: const LoginScreen(),
+    
       //home: MyHomePage(),  //para cargar el archivo pruebas
-      routes: AppRoutes.routes,
+      home: MenuPrincipalScreen(),
 
+  
+
+      
 
     );
   }
