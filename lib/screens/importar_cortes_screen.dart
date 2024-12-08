@@ -1,7 +1,9 @@
-import 'package:flutter/material.dart';
-import '../services/soap_service.dart';
+import 'package:flutter_web_service/export.dart';
+
 class ImportarCortesScreen extends StatefulWidget {
-  const ImportarCortesScreen({super.key});
+  final String Cper; // Recibe un id como parámetro de tipo String
+
+  const ImportarCortesScreen({Key? key, required this.Cper}) : super(key: key);
 
   @override
   _ImportarCortesScreenState createState() => _ImportarCortesScreenState();
@@ -9,8 +11,8 @@ class ImportarCortesScreen extends StatefulWidget {
 
 class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
   String? selectedRuta;
-  List<String> rutas = [];
   bool isLoading = true;
+  late final List<Rutas> rutasSoap;
 
   @override
   void initState() {
@@ -19,49 +21,94 @@ class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
   }
 
   Future<void> _loadRutas() async {
-    // rutas = await SoapService().obtenerRutas(0); // Consumir SOAP
-    // setState(() {
-    //   isLoading = false;
-    // });
+    rutasSoap = await WebService.ObtenerRutas(0);
+    setState(() {
+      isLoading = false;
+    });
+  }
+
+  void _navigateToOtraVista(BuildContext context, String rutaId) {
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (_) => OtraVista(rutaId: rutaId),
+    //   ),
+    // );
+  }
+  void _accionAdicional() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Acción adicional ejecutada')),
+    );
+  }
+
+  void _otraAccion() {
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Otra acción ejecutada')),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Importar Cortes')),
+      appBar: AppBar(
+        title: const Text('Importar Cortes'),
+      ),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
+          : Center(
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  DropdownButton<String>(
-                    value: selectedRuta,
-                    hint: const Text('Selecciona una ruta'),
-                    onChanged: (value) {
-                      setState(() {
-                        selectedRuta = value;
-                      });
-                    },
-                    items: rutas
-                        .map((ruta) => DropdownMenuItem(
-                              value: ruta,
-                              child: Text(ruta),
-                            ))
-                        .toList(),
+                  Expanded(
+                    child: ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: rutasSoap.length,
+                      itemBuilder: (context, index) {
+                        final ruta = rutasSoap[index];
+                        return Card(
+                          elevation: 4,
+                          margin: const EdgeInsets.symmetric(
+                              vertical: 8, horizontal: 16),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(16),
+                            title: Text(
+                              ruta.getNombreRuta,
+                              style: const TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('ID Ruta: ${ruta.getIdRuta}'),
+                                Text('Nombre: ${ruta.getNombre}'),
+                                Text('Zona: ${ruta.getZona}'),
+                              ],
+                            ),
+                            onTap: () {
+                              _navigateToOtraVista(context, ruta.getIdRuta);
+                            },
+                          ),
+                        );
+                      },
+                    ),
                   ),
                   const SizedBox(height: 16),
-                  const Text('CODIGO FIJO', style: TextStyle(fontSize: 18)),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () async {
-                      // if (selectedRuta != null) {
-                      //   await SoapService().importarCortes(selectedRuta!);
-                      //   // Manejo de resultado
-                      // }
-                    },
-                    child: const Text('Importar Cortes'),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ElevatedButton(
+                        onPressed: _accionAdicional,
+                        child: const Text('Acción 1'),
+                      ),
+                      ElevatedButton(
+                        onPressed: _otraAccion,
+                        child: const Text('Acción 2'),
+                      ),
+                    ],
                   ),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),

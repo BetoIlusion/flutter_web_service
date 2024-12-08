@@ -1,4 +1,5 @@
 import 'package:flutter_web_service/export.dart';
+import 'package:flutter_web_service/services/web_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -17,25 +18,40 @@ class _LoginScreenState extends State<LoginScreen> {
   void _botonLogin() async {
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
-    
-    final client = SoapClient(
-      endpoint: 'http://190.171.244.211:8080/wsVarios/wsAD.asmx',
-      namespace: 'http://tempuri.org/',
-    );
-    final service = SoapService(client: client);
+
+    if (email.isEmpty || password.isEmpty) {
+      // Mostrar mensaje de error si los campos están vacíos
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Por favor, ingrese el correo y la contraseña')),
+      );
+      return;
+    }
 
     try {
-      final response = await service.validarLoginPassword(
-        email,
-        password,
-      );
-      setState(() {
-        _response = response;
-      });
+       String login = await WebService.ValidarLogin(email, password);
+      if (login != "") {
+        // Mostrar mensaje de validación
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Inicio de sesión exitoso')),
+        );
+
+        // Navegar a la siguiente vista después de un pequeño retraso para mostrar el mensaje
+        await Future.delayed(Duration(seconds: 2)); // Espera 2 segundos
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => MenuPrincipalScreen(Cper: login)),
+        );
+      } else {
+        // Mostrar mensaje de error de credenciales inválidas
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Credenciales inválidas, intente nuevamente')),
+        );
+      }
     } catch (e) {
-      setState(() {
-        _response = 'Error: $e';
-      });
+      // Manejo de errores generales
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al intentar iniciar sesión: $e')),
+      );
     }
   }
 

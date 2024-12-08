@@ -1,10 +1,13 @@
 export 'package:flutter/material.dart';
 export 'dart:io';
-export 'services/soap_service.dart';
 
 // TODO: Model
-
 export '../model/user_model.dart';
+  // * WebService
+export 'model/web_service_model.dart/ruta.dart';
+
+
+
 // TODO: Controller
 export 'controller/user_controller.dart';
 
@@ -16,6 +19,4 @@ export 'screens/pruebas/rutas_screen.dart';
 export 'screens/pruebas/map1.dart';
 
 // TODO: Services
-export 'services/soap_service.dart';
-export 'services/soap_client.dart';
-
+export 'services/web_service.dart';
