@@ -11,6 +11,7 @@ class ImportarCortesScreen extends StatefulWidget {
 
 class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
   String? selectedRuta;
+  List<String> rutas = [];
   bool isLoading = true;
   late final List<Rutas> rutasSoap;
 
