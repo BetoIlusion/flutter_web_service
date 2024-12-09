@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'export.dart';
-//import 'screens/pruebas/w_s_prueba1.dart';
+import 'screens/login_screen.dart';
+import 'screens/pruebas/w_s_prueba1.dart';
 
 void main() {
   runApp(const MainApp());
@@ -15,8 +16,8 @@ class MainApp extends StatelessWidget {
       title: 'Web Services',
       debugShowCheckedModeBanner: false,
     
-      //home: MyHomePage(),  //para cargar el archivo pruebas
-      home: MenuPrincipalScreen(),
+      home: MyHomePage(),  //para cargar el archivo pruebas
+      
 
   
 

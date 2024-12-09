@@ -21,6 +21,22 @@ class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
   void initState() {
     super.initState();
     _loadRutas();
+/*
+      usuarios = [
+      {
+        'nombre': 'BARTELEMI YOIVO CARMEN',
+        'clu': '00000',
+        'latitud': '-16.39800000000',
+        'longitud': '-70.95440000000'
+      },
+      {
+        'nombre': 'PARIA MERCADO MILTON',
+        'clu': '00000',
+        'latitud': '-16.37800000000',
+        'longitud': '-70.87755000000'
+      },
+      // Añade más usuarios según necesites
+    ];    */
   }
 
   Future<void> _loadRutas() async {
@@ -28,6 +44,33 @@ class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
     // setState(() {
     //   isLoading = false;
     // });
+
+  }
+
+  ///importa cortes 
+   Future<void> _importarCortes() async {
+    if (selectedRuta == null) return;
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      // Aquí implementarías la llamada real al servicio SOAP
+      // await SoapService().importarCortes(selectedRuta!);
+      await Future.delayed(const Duration(seconds: 2)); // Simulación
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Cortes importados exitosamente')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al importar cortes: $e')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
