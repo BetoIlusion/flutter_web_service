@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_web_service/screens/exportar_cortes_screen.dart';
-import 'package:flutter_web_service/screens/listar_cortes_screen.dart';
 import 'package:flutter_web_service/screens/registrar_cortes_screen.dart';
 import '../screens/importar_cortes_screen.dart';
 
 class CortesScreen extends StatelessWidget {
   final String Cper;
 
-  const CortesScreen({Key? key, required this.Cper}) : super(key: key);
+  const CortesScreen({super.key, required this.Cper});
 
   @override
   Widget build(BuildContext context) {

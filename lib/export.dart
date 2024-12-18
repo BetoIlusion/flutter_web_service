@@ -3,10 +3,8 @@ export 'dart:io';
 
 // TODO: Model
 export '../model/user_model.dart';
-  // * WebService
+// * WebService
 export 'model/web_service_model.dart/ruta.dart';
-
-
 
 // TODO: Controller
 export 'controller/user_controller.dart';
@@ -15,8 +13,7 @@ export 'controller/user_controller.dart';
 export 'screens/menu_principal_screen.dart';
 export 'screens/cortes_screen.dart';
 export 'screens/sign_up_screen.dart';
-export 'screens/pruebas/rutas_screen.dart';
-export 'screens/pruebas/map1.dart';
+export 'screens/map_screen.dart';
 
 // TODO: Services
 export 'services/web_service.dart';

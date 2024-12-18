@@ -4,7 +4,7 @@ import '../screens/cortes_screen.dart';
 class MenuPrincipalScreen extends StatelessWidget {
   final String Cper;
 
-  const MenuPrincipalScreen({Key? key, required this.Cper}) : super(key: key);
+  const MenuPrincipalScreen({super.key, required this.Cper});
 
   void _botonLectura(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(

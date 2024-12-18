@@ -12,7 +12,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
-  String _response = 'vacio';
+  final String _response = 'vacio';
   final UserController userController = UserController();
 
   void _botonLogin() async {
@@ -22,7 +22,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (email.isEmpty || password.isEmpty) {
       // Mostrar mensaje de error si los campos están vacíos
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor, ingrese el correo y la contraseña')),
+        const SnackBar(content: Text('Por favor, ingrese el correo y la contraseña')),
       );
       return;
     }
@@ -32,11 +32,11 @@ class _LoginScreenState extends State<LoginScreen> {
       if (login != "") {
         // Mostrar mensaje de validación
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Inicio de sesión exitoso')),
+          const SnackBar(content: Text('Inicio de sesión exitoso')),
         );
 
         // Navegar a la siguiente vista después de un pequeño retraso para mostrar el mensaje
-        await Future.delayed(Duration(seconds: 2)); // Espera 2 segundos
+        await Future.delayed(const Duration(seconds: 2)); // Espera 2 segundos
         Navigator.push(
           context,
           MaterialPageRoute(builder: (context) => MenuPrincipalScreen(Cper: login)),
@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       } else {
         // Mostrar mensaje de error de credenciales inválidas
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Credenciales inválidas, intente nuevamente')),
+          const SnackBar(content: Text('Credenciales inválidas, intente nuevamente')),
         );
       }
     } catch (e) {
@@ -209,7 +209,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 ],
               ),
               const SizedBox(height: 20),
-              Text('Respuesta del servidor:'),
+              const Text('Respuesta del servidor:'),
               Text(_response),
             ],
           ),

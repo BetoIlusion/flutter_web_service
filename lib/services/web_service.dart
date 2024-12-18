@@ -1,3 +1,4 @@
+import 'package:flutter_web_service/model/web_service_model.dart/ruta_reporte.dart';
 import 'package:http/http.dart' as http;
 import 'package:xml/xml.dart' as xml;
 import 'package:flutter_web_service/export.dart';
@@ -13,10 +14,20 @@ class WebService {
     return ruta.getListaRuta;
   }
 
+  static Future<List<ReporteCorte>> ObtenerReporteCorte(
+      int Nrut, int Nm, int Cper) {
+    Rutas ruta = Rutas(Cper);
+    ruta.setIdRuta = Nrut.toString();
+    ReporteCorte reporteCorte = ReporteCorte();
+    reporteCorte.rutas = ruta;
+    reporteCorte.nroCorte = Nm;
+    return reporteCorte.getListReportes();
+  }
+
   static Future<String> ValidarLogin(String email, String password) async {
     final List<String> fetchValidacion =
         await _fetchValidarLoginPassword(email, password);
-    if (fetchValidacion.length > 0) {
+    if (fetchValidacion.isNotEmpty) {
       return fetchValidacion[3];
     }
     print("fetchValidacion no tiene datos");
@@ -24,7 +35,7 @@ class WebService {
   }
 
   static Future<List<Map<String, dynamic>>> fetchRutas(int Cper) async {
-    final url = Uri.parse(baseUrl1 + '?op=W0Corte_ObtenerRutas');
+    final url = Uri.parse('$baseUrl1?op=W0Corte_ObtenerRutas');
     final headers = {
       'Content-Type': 'application/soap+xml; charset=utf-8',
       'SOAPAction': 'http://activebs.net/W0Corte_ObtenerRutas',
@@ -57,8 +68,8 @@ class WebService {
   }
 
   static Future<List<Map<String, dynamic>>> fetchReporteParaCortesSIG(
-      int Nrut) async {
-    final url = Uri.parse(baseUrl1 + '?op=W0Corte_ObtenerRutas');
+      int Nrut, int Ncnt, int Cper) async {
+    final url = Uri.parse('$baseUrl1?op=W0Corte_ObtenerRutas');
     final headers = {
       'Content-Type': 'application/soap+xml; charset=utf-8',
       'SOAPAction': 'http://activebs.net/W0Corte_ObtenerRutas',
@@ -68,8 +79,8 @@ class WebService {
                       <soap12:Body>
                         <W2Corte_ReporteParaCortes xmlns="http://activebs.net/">
                           <liNrut>$Nrut</liNrut>
-                          <liNcnt>0</liNcnt>
-                          <liCper>0</liCper>
+                          <liNcnt>$Ncnt</liNcnt>
+                          <liCper>$Cper</liCper>
                         </W2Corte_ReporteParaCortes>
                       </soap12:Body>
                     </soap12:Envelope>''';
@@ -94,7 +105,7 @@ class WebService {
 
   static Future<List<String>> _fetchValidarLoginPassword(
       String email, String password) async {
-    final url = Uri.parse(baseUrl2 + '?op=ValidarLoginPassword');
+    final url = Uri.parse('$baseUrl2?op=ValidarLoginPassword');
     final headers = {
       'Content-Type': 'application/soap+xml; charset=utf-8',
       'SOAPAction': 'http://activebs.net/ValidarLoginPassword',

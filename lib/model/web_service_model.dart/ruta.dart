@@ -3,17 +3,16 @@ import 'dart:ffi';
 import 'package:flutter_web_service/services/web_service.dart';
 
 class Rutas {
+  late String _idRuta;
   late int _Cper;
-  late String _id;
   late String _nombreRuta;
   late String _nombrePersona;
   late String _zonaString;
   List<Rutas> _ListaRuta = [];
-  late Double latitud;
-  late Double longitud;
 
-  String get getIdRuta => _id;
-  set setIdRuta(String id) => _id = id;
+
+  String get getIdRuta => _idRuta;
+  set setIdRuta(String id) => _idRuta = id;
   String get getNombreRuta => _nombreRuta;
   set setNombreRuta(String id) => _nombreRuta = id;
 
@@ -25,7 +24,8 @@ class Rutas {
 
   Future<List<Rutas>> get getListaRuta => _llenarDatos(_Cper);
   set setListaRuta(List<Rutas> lista) => _ListaRuta = lista;
-
+  int get getCper => _Cper;
+  set setCper(int Cper) => _Cper = Cper;
   // Constructor que llama a la función para asignar valores
   Rutas(int Cper) {
     _Cper = Cper;
@@ -41,9 +41,9 @@ class Rutas {
         Rutas ruta = Rutas(Cper);
         ruta.setIdRuta = contenido['bsrutnrut'];
         ruta.setNombreRuta = contenido['bsrutdesc'];
+        //ruta.setCper = contenido['bsrutcper'];
         ruta.setNombre = contenido['dNomb'];
         ruta.setZona = contenido['dNzon'];
-        print("++++++++++++++++++++++++++++++++++++++++ LLENANDO +++++");
         _ListaRuta.add(ruta);
         if (i == 20) {
           return _ListaRuta;

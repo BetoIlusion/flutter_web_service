@@ -3,7 +3,7 @@ import 'package:flutter_web_service/export.dart';
 class ImportarCortesScreen extends StatefulWidget {
   final String Cper; // Recibe un id como parámetro de tipo String
 
-  const ImportarCortesScreen({Key? key, required this.Cper}) : super(key: key);
+  const ImportarCortesScreen({super.key, required this.Cper});
 
   @override
   _ImportarCortesScreenState createState() => _ImportarCortesScreenState();
@@ -23,16 +23,17 @@ class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
 
   Future<void> _loadRutas() async {
     rutasSoap = await WebService.ObtenerRutas(0);
+    print(rutasSoap);
     setState(() {
       isLoading = false;
     });
   }
 
-  void _navigateToOtraVista(BuildContext context, String rutaId) {
+  void _botonListReporte(BuildContext context, Rutas ruta) {
     // Navigator.push(
     //   context,
     //   MaterialPageRoute(
-    //     builder: (_) => OtraVista(rutaId: rutaId),
+    //     builder: (_) => ReporteRutaScreen(Cper: ruta.getCper);
     //   ),
     // );
   }
@@ -88,7 +89,7 @@ class _ImportarCortesScreenState extends State<ImportarCortesScreen> {
                               ],
                             ),
                             onTap: () {
-                              _navigateToOtraVista(context, ruta.getIdRuta);
+                              //_botonListReporte(context, ruta);
                             },
                           ),
                         );
